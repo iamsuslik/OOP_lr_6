@@ -234,6 +234,6 @@ CMakeFiles/lab_06.dir/src/squirrel.cpp.o: \
  /usr/include/c++/13/tr1/poly_hermite.tcc \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
  /usr/include/c++/13/tr1/riemann_zeta.tcc \
+ /mnt/c/Users/daria/Desktop/oop/лаба6/src/../include/visitor.h \
  /mnt/c/Users/daria/Desktop/oop/лаба6/src/../include/slaver.h \
- /mnt/c/Users/daria/Desktop/oop/лаба6/src/../include/knight.h \
- /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc
+ /mnt/c/Users/daria/Desktop/oop/лаба6/src/../include/knight.h

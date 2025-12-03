@@ -7,6 +7,9 @@ lab_06: \
   CMakeFiles/lab_06.dir/src/slaver.cpp.o \
   CMakeFiles/lab_06.dir/src/knight.cpp.o \
   CMakeFiles/lab_06.dir/src/squirrel.cpp.o \
+  CMakeFiles/lab_06.dir/src/factory.cpp.o \
+  CMakeFiles/lab_06.dir/src/observer.cpp.o \
+  CMakeFiles/lab_06.dir/src/visitor.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
@@ -50,6 +53,12 @@ CMakeFiles/lab_06.dir/src/slaver.cpp.o:
 CMakeFiles/lab_06.dir/src/knight.cpp.o:
 
 CMakeFiles/lab_06.dir/src/squirrel.cpp.o:
+
+CMakeFiles/lab_06.dir/src/factory.cpp.o:
+
+CMakeFiles/lab_06.dir/src/observer.cpp.o:
+
+CMakeFiles/lab_06.dir/src/visitor.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
 

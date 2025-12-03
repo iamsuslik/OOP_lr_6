@@ -10,13 +10,7 @@ public:
     void print() override;
     void save(std::ostream &os) override;
 
-    bool accept(const std::shared_ptr<NPC>& attacker) override;
+    bool accept(std::shared_ptr<IFightVisitor> visitor) override;
 
-    friend class Knight;
-    friend class Squirrel;
-    
-protected: 
-    bool fight(std::shared_ptr<Slaver> other) override;
-    bool fight(std::shared_ptr<Knight> other) override;
-    bool fight(std::shared_ptr<Squirrel> other) override;
+    friend std::ostream &operator<<(std::ostream &os, Slaver &slaver);
 };

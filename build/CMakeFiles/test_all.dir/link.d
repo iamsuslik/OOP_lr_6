@@ -7,6 +7,9 @@ test_all: \
   CMakeFiles/test_all.dir/src/slaver.cpp.o \
   CMakeFiles/test_all.dir/src/knight.cpp.o \
   CMakeFiles/test_all.dir/src/squirrel.cpp.o \
+  CMakeFiles/test_all.dir/src/factory.cpp.o \
+  CMakeFiles/test_all.dir/src/observer.cpp.o \
+  CMakeFiles/test_all.dir/src/visitor.cpp.o \
   lib/libgtest_main.a \
   lib/libgtest.a \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
@@ -52,6 +55,12 @@ CMakeFiles/test_all.dir/src/slaver.cpp.o:
 CMakeFiles/test_all.dir/src/knight.cpp.o:
 
 CMakeFiles/test_all.dir/src/squirrel.cpp.o:
+
+CMakeFiles/test_all.dir/src/factory.cpp.o:
+
+CMakeFiles/test_all.dir/src/observer.cpp.o:
+
+CMakeFiles/test_all.dir/src/visitor.cpp.o:
 
 lib/libgtest_main.a:
 

@@ -9,10 +9,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/mnt/c/Users/daria/Desktop/oop/лаба6/main.cpp" "CMakeFiles/lab_06.dir/main.cpp.o" "gcc" "CMakeFiles/lab_06.dir/main.cpp.o.d"
+  "/mnt/c/Users/daria/Desktop/oop/лаба6/src/factory.cpp" "CMakeFiles/lab_06.dir/src/factory.cpp.o" "gcc" "CMakeFiles/lab_06.dir/src/factory.cpp.o.d"
   "/mnt/c/Users/daria/Desktop/oop/лаба6/src/knight.cpp" "CMakeFiles/lab_06.dir/src/knight.cpp.o" "gcc" "CMakeFiles/lab_06.dir/src/knight.cpp.o.d"
   "/mnt/c/Users/daria/Desktop/oop/лаба6/src/npc.cpp" "CMakeFiles/lab_06.dir/src/npc.cpp.o" "gcc" "CMakeFiles/lab_06.dir/src/npc.cpp.o.d"
+  "/mnt/c/Users/daria/Desktop/oop/лаба6/src/observer.cpp" "CMakeFiles/lab_06.dir/src/observer.cpp.o" "gcc" "CMakeFiles/lab_06.dir/src/observer.cpp.o.d"
   "/mnt/c/Users/daria/Desktop/oop/лаба6/src/slaver.cpp" "CMakeFiles/lab_06.dir/src/slaver.cpp.o" "gcc" "CMakeFiles/lab_06.dir/src/slaver.cpp.o.d"
   "/mnt/c/Users/daria/Desktop/oop/лаба6/src/squirrel.cpp" "CMakeFiles/lab_06.dir/src/squirrel.cpp.o" "gcc" "CMakeFiles/lab_06.dir/src/squirrel.cpp.o.d"
+  "/mnt/c/Users/daria/Desktop/oop/лаба6/src/visitor.cpp" "CMakeFiles/lab_06.dir/src/visitor.cpp.o" "gcc" "CMakeFiles/lab_06.dir/src/visitor.cpp.o.d"
   "" "lab_06" "gcc" "CMakeFiles/lab_06.dir/link.d"
   )
 

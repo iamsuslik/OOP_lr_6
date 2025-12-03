@@ -334,4 +334,7 @@ CMakeFiles/test_all.dir/test/test_all.cpp.o: \
  /usr/include/c++/13/tr1/riemann_zeta.tcc \
  /mnt/c/Users/daria/Desktop/oop/лаба6/test/../include/slaver.h \
  /mnt/c/Users/daria/Desktop/oop/лаба6/test/../include/knight.h \
- /mnt/c/Users/daria/Desktop/oop/лаба6/test/../include/squirrel.h
+ /mnt/c/Users/daria/Desktop/oop/лаба6/test/../include/squirrel.h \
+ /mnt/c/Users/daria/Desktop/oop/лаба6/test/../include/factory.h \
+ /mnt/c/Users/daria/Desktop/oop/лаба6/test/../include/visitor.h \
+ /mnt/c/Users/daria/Desktop/oop/лаба6/test/../include/observer.h

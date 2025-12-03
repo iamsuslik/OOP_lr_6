@@ -19,22 +19,25 @@ FetchContent_Declare(
     URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
     DOWNLOAD_NO_PROGRESS TRUE
     DOWNLOAD_TIMEOUT 600
-    DOWNLOAD_EXTRACT_TIMESTAMP TRUE 
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 FetchContent_MakeAvailable(googletest)
 
-
-
+# Основное приложение
 add_executable(${PROJECT_NAME}
     main.cpp
     src/npc.cpp
     src/slaver.cpp
     src/knight.cpp
     src/squirrel.cpp
+    src/factory.cpp
+    src/observer.cpp
+    src/visitor.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
+# Тесты
 enable_testing()
 add_executable(test_all
     test/test_all.cpp
@@ -42,6 +45,9 @@ add_executable(test_all
     src/slaver.cpp
     src/knight.cpp
     src/squirrel.cpp
+    src/factory.cpp
+    src/observer.cpp
+    src/visitor.cpp
 )
 
 target_include_directories(test_all PRIVATE include)

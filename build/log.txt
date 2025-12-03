@@ -1,0 +1,4 @@
+
+Murder --------
+Killer: Knight "Attacker" {x:100, y:100}
+Victim: Slaver "TestNPC" {x:100, y:100}

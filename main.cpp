@@ -1,294 +1,371 @@
-#include "include/npc.h"
-#include "include/slaver.h"
-#include "include/knight.h"
-#include "include/squirrel.h"
-
+#include <iostream>
 #include <memory>
-#include <random>
+#include <vector>
 #include <fstream>
-#include <cstring>
-#include <sstream>
-#include <stdexcept>
 #include <algorithm>
-#include <cmath>
+#include <ctime>
+#include <iomanip>
+#include "include/factory.h"
+#include "include/visitor.h"
 
-
-std::string NpcTypeToString(NpcType type) {
-    switch (type) {
-        case SquirrelType: return "Squirrel";
-        case SlaverType: return "Slaver";
-        case KnightType: return "Knight";
-        default: return "Unknown";
-    }
+void printMenu() {
+    std::cout << "\n=== Balagur Fate 3 - Dungeon Editor ===\n";
+    std::cout << "1. Add new NPC\n";
+    std::cout << "2. Show all NPCs\n";
+    std::cout << "3. Save NPCs to file\n";
+    std::cout << "4. Load NPCs from file\n";
+    std::cout << "5. Start battle mode\n";
+    std::cout << "6. Show battle log (log.txt)\n";
+    std::cout << "7. Clear battle log\n";
+    std::cout << "8. Exit\n";
+    std::cout << "Choose option: ";
 }
 
-
-
-class TextObserver : public IFightObserver
-{
-private:
-    TextObserver(){};
-public:
-    static std::shared_ptr<IFightObserver> get()
-    {
-        static TextObserver instance;
-        return std::shared_ptr<IFightObserver>(&instance, [](IFightObserver *) {});
-    }
-
-    void on_fight(const std::shared_ptr<NPC> attacker, const std::shared_ptr<NPC> defender, bool win) override
-    {
-        if (win)
-        {
-            std::cout << std::endl << "Murder --------" << std::endl;
-            std::cout << "Killer: ";
-            attacker->print();
-            std::cout << "Victim: ";
-            defender->print();
-        }
-    }
-};
-
-class FileObserver : public IFightObserver
-{
-private:
-    std::ofstream file;
-    FileObserver()
-    {
-        file.open("log.txt", std::ios::app);
-    }
-public:
-    static std::shared_ptr<IFightObserver> get()
-    {
-        static FileObserver instance;
-        return std::shared_ptr<IFightObserver>(&instance, [](IFightObserver *) {});
-    }
-
-    void on_fight(const std::shared_ptr<NPC> attacker, const std::shared_ptr<NPC> defender, bool win) override
-    {
-        if (win)
-        {
-            file << std::endl << "Murder --------" << std::endl;
-            file << "Killer: ";
-
-            switch(attacker->get_type()) {
-                case SlaverType:
-                    file << "Slaver";
-                    break;
-                case KnightType:
-                    file << "Knight";
-                    break;
-                case SquirrelType:
-                    file << "Squirrel";
-                    break;
-                default:
-                    file << "Unknown";
-            }
-            file << " \"" << attacker->get_name() << "\" {x:" << attacker->get_x() << ", y:" << attacker->get_y() << "}" << std::endl;
-            file << "Victim: ";
-
-            switch(defender->get_type()) {
-                case SlaverType:
-                    file << "Slaver";
-                    break;
-                case KnightType:
-                    file << "Knight";
-                    break;
-                case SquirrelType:
-                    file << "Squirrel";
-                    break;
-                default:
-                    file << "Unknown";
-            }
-            file << " \"" << defender->get_name() << "\" {x:" << defender->get_x() << ", y:" << defender->get_y() << "}" << std::endl;
-        }
-    }
-};
-
-
-std::shared_ptr<NPC> factory(std::istream &is)
-{
-    std::shared_ptr<NPC> result;
-    int type{0};
-    if (is >> type)
-    {
-        try {
-            switch (static_cast<NpcType>(type))
-            {
-            case SquirrelType:
-                result = std::make_shared<Squirrel>(is);
-                break;
-            case SlaverType:
-                result = std::make_shared<Slaver>(is);
-                break;
-            case KnightType:
-                result = std::make_shared<Knight>(is);
-                break;
-            default:
-                std::cerr << "Unexpected NPC type: " << type << std::endl;
-            }
-        } catch (const std::exception& e) {
-            std::cerr << "Error loading NPC: " << e.what() << std::endl;
-        }
-    }
-
-    if (result) {
-        result->subscribe(TextObserver::get());
-        result->subscribe(FileObserver::get());
-    }
-
-    return result;
-}
-
-std::shared_ptr<NPC> factory(NpcType type, int x, int y, const std::string& name)
-{
-    std::shared_ptr<NPC> result;
-    try {
-        switch (type)
-        {
-        case SquirrelType:
-            result = std::make_shared<Squirrel>(x, y, name);
-            break;
-        case SlaverType:
-            result = std::make_shared<Slaver>(x, y, name);
-            break;
-        case KnightType:
-            result = std::make_shared<Knight>(x, y, name);
-            break;
-        default:
-            std::cerr << "Unknown NPC type: " << static_cast<int>(type) << std::endl;
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "Error creating NPC: " << e.what() << std::endl;
-    }
-
-    if (result) {
-        result->subscribe(TextObserver::get());
-        result->subscribe(FileObserver::get());
-    }
-
-    return result;
-}
-
-void save(const set_t &array, const std::string &filename)
-{
-    std::ofstream fs(filename);
-    if (!fs.is_open()) {
-        std::cerr << "Error opening file for saving: " << filename << std::endl;
+void addNPC(std::vector<std::shared_ptr<NPC>>& npcs) {
+    int type, x, y;
+    std::string name;
+    
+    std::cout << "\n--- Add NPC ---\n";
+    std::cout << "NPC types:\n";
+    std::cout << "1. Squirrel\n";
+    std::cout << "2. Slaver\n";
+    std::cout << "3. Knight\n";
+    std::cout << "Select type (1-3): ";
+    std::cin >> type;
+    
+    std::cout << "Enter X coordinate (0-500): ";
+    std::cin >> x;
+    std::cout << "Enter Y coordinate (0-500): ";
+    std::cin >> y;
+    
+    std::cout << "Enter name: ";
+    std::cin.ignore();
+    std::getline(std::cin, name);
+    
+    if (x < 0 || x > 500 || y < 0 || y > 500) {
+        std::cout << "Coordinates must be between 0 and 500!\n";
         return;
     }
-    fs << array.size() << std::endl;
-    for (auto &n : array)
-        n->save(fs);
-    fs.flush();
-    fs.close();
+    
+    if (type < 1 || type > 3) {
+        std::cout << "Invalid type!\n";
+        return;
+    }
+    
+    auto npc = Factory::CreateNPC(static_cast<NpcType>(type), x, y, name);
+    if (npc) {
+        npcs.push_back(npc);
+        
+        // Записываем в лог создание NPC
+        std::ofstream logfile("log.txt", std::ios::app);
+        auto now = std::time(nullptr);
+        logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+        logfile << "Created NPC: ";
+        
+        switch (type) {
+            case 1: logfile << "Squirrel"; break;
+            case 2: logfile << "Slaver"; break;
+            case 3: logfile << "Knight"; break;
+        }
+        logfile << " \"" << name << "\" at (" << x << ", " << y << ")\n";
+        logfile.close();
+        
+        std::cout << "NPC added successfully!\n";
+    } else {
+        std::cout << "Failed to create NPC!\n";
+    }
 }
 
-set_t load(const std::string &filename)
-{
-    set_t result;
-    std::ifstream is(filename);
-    if (is.good() && is.is_open())
-    {
-        int count;
-        if (is >> count) {
-            for (int i = 0; i < count; ++i) {
-                auto npc = factory(is);
-                if (npc) {
-                    result.insert(npc);
-                } else {
+void showNPCs(const std::vector<std::shared_ptr<NPC>>& npcs) {
+    std::cout << "\n--- All NPCs ---\n";
+    if (npcs.empty()) {
+        std::cout << "No NPCs found.\n";
+        return;
+    }
+    
+    int squirrel_count = 0, slaver_count = 0, knight_count = 0;
+    
+    for (const auto& npc : npcs) {
+        npc->print();
+        switch (npc->get_type()) {
+            case SquirrelType: squirrel_count++; break;
+            case SlaverType: slaver_count++; break;
+            case KnightType: knight_count++; break;
+        }
+    }
+    
+    std::cout << "\nTotal: " << npcs.size() << " NPCs\n";
+    std::cout << "Squirrels: " << squirrel_count << "\n";
+    std::cout << "Slavers: " << slaver_count << "\n";
+    std::cout << "Knights: " << knight_count << "\n";
+}
+
+void saveToFile(const std::vector<std::shared_ptr<NPC>>& npcs) {
+    std::string filename;
+    std::cout << "Enter filename to save: ";
+    std::cin >> filename;
+    
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cout << "Cannot open file!\n";
+        return;
+    }
+    
+    for (const auto& npc : npcs) {
+        npc->save(file);
+    }
+    
+    file.close();
+    
+    // Записываем в лог сохранение
+    std::ofstream logfile("log.txt", std::ios::app);
+    auto now = std::time(nullptr);
+    logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+    logfile << "Saved " << npcs.size() << " NPCs to file: " << filename << "\n";
+    logfile.close();
+    
+    std::cout << "Saved " << npcs.size() << " NPCs to " << filename << "\n";
+}
+
+void loadFromFile(std::vector<std::shared_ptr<NPC>>& npcs) {
+    std::string filename;
+    std::cout << "Enter filename to load: ";
+    std::cin >> filename;
+    
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cout << "Cannot open file!\n";
+        return;
+    }
+    
+    int loaded = 0;
+    npcs.clear();
+    
+    while (file.peek() != EOF) {
+        auto npc = Factory::CreateNPC(file);
+        if (npc) {
+            npcs.push_back(npc);
+            loaded++;
+        } else {
+            std::cout << "Warning: Failed to load some NPCs\n";
+            break;
+        }
+    }
+    
+    file.close();
+    
+    // Записываем в лог загрузку
+    std::ofstream logfile("log.txt", std::ios::app);
+    auto now = std::time(nullptr);
+    logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+    logfile << "Loaded " << loaded << " NPCs from file: " << filename << "\n";
+    logfile.close();
+    
+    std::cout << "Loaded " << loaded << " NPCs from " << filename << "\n";
+}
+
+void startBattle(std::vector<std::shared_ptr<NPC>>& npcs) {
+    if (npcs.size() < 2) {
+        std::cout << "Need at least 2 NPCs for battle!\n";
+        return;
+    }
+    
+    int distance;
+    std::cout << "Enter battle distance (meters): ";
+    std::cin >> distance;
+    
+    std::cout << "\n=== BATTLE MODE ===\n";
+    std::cout << "Starting battle with " << npcs.size() << " NPCs\n";
+    std::cout << "Battle distance: " << distance << " meters\n";
+    
+    // Записываем в лог начало битвы
+    std::ofstream logfile("log.txt", std::ios::app);
+    auto now = std::time(nullptr);
+    logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+    logfile << "=== BATTLE STARTED ===\n";
+    logfile << "NPCs: " << npcs.size() << ", Distance: " << distance << "m\n";
+    logfile.close();
+    
+    int round = 1;
+    bool battle_occurred = false;
+    
+    // Создаем копию для безопасной итерации
+    auto npcs_copy = npcs;
+    auto it = npcs_copy.begin();
+    
+    while (it != npcs_copy.end()) {
+        auto attacker = *it;
+        auto jt = npcs_copy.begin();
+        while (jt != npcs_copy.end()) {
+            if (it != jt) {
+                auto defender = *jt;
+                if (attacker->is_close(defender, distance)) {
+                    std::cout << "\nRound " << round++ << ": ";
+                    std::cout << attacker->get_name() << " attacks " << defender->get_name() << "\n";
+                    
+                    auto visitor = std::make_shared<BattleVisitor>(attacker);
+                    if (defender->accept(visitor)) {
+                        // Defender killed
+                        std::cout << "  -> " << attacker->get_name() << " killed " 
+                                  << defender->get_name() << "!\n";
+                        
+                        battle_occurred = true;
+                        
+                        // Удаляем из основного вектора
+                        auto pos = std::find(npcs.begin(), npcs.end(), defender);
+                        if (pos != npcs.end()) {
+                            npcs.erase(pos);
+                        }
+                        
+                        // Удаляем из копии
+                        jt = npcs_copy.erase(jt);
+                        continue;
+                    } else {
+                        std::cout << "  -> " << attacker->get_name() << " failed to kill " 
+                                  << defender->get_name() << "\n";
+                    }
                 }
             }
+            ++jt;
         }
-        is.close();
+        ++it;
     }
-    else
-        std::cerr << "Error opening file for loading: " << filename << ". " << std::strerror(errno) << std::endl;
-    return result;
-}
-
-std::ostream &operator<<(std::ostream &os, const set_t &array) {
-    for (auto &n : array)
-        n->print();
-    return os;
-}
-
-set_t fight(const set_t &array, size_t distance)
-{
-    set_t dead_list;
-
-    for (const auto &attacker : array)
-        for (const auto &defender : array)
-            if ((attacker != defender) && 
-                (attacker->is_close(defender, distance)) &&
-                !dead_list.count(defender) &&
-                !dead_list.count(attacker))
-            {
-                bool success = defender->accept(attacker); 
-                if (success)
-                    dead_list.insert(defender);
-            }
-
-    return dead_list;
-}
-
-std::string generate_name() {
-    static std::vector<std::string> names = {
-        "Rab", "Groz", "Kharon", "Vand", "Siriu", "Cheshir", 
-        "Sir", "Lady", "Spark", "Ezhik", "Robin", "Kira"
-    };
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, names.size() - 1);
-    return names[dis(gen)] + "_" + std::to_string(rd() % 1000);
-}
-
-int main()
-{
-    // Очищаем лог-файл при старте
-    std::ofstream("log.txt", std::ios::trunc).close(); 
     
-    set_t array;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> coord_dis(0, 500);
-    std::uniform_int_distribution<> type_dis(1, 3);
-
-    for (size_t i = 0; i < 20; ++i) {
-        array.insert(factory(
-            static_cast<NpcType>(type_dis(gen)),
-            coord_dis(gen),
-            coord_dis(gen),
-            generate_name()
-        ));
+    // Записываем в лог окончание битвы
+    logfile.open("log.txt", std::ios::app);
+    now = std::time(nullptr);
+    logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+    logfile << "Battle finished. Remaining NPCs: " << npcs.size() << "\n";
+    logfile << "=== BATTLE ENDED ===\n\n";
+    logfile.close();
+    
+    if (!battle_occurred) {
+        std::cout << "\nNo battles occurred (NPCs were too far apart)\n";
     }
+    
+    std::cout << "\nBattle finished!\n";
+    std::cout << "Remaining NPCs: " << npcs.size() << "\n";
+}
 
-    save(array, "npc.txt");
-    array.clear();
-    array = load("npc.txt");
+void showBattleLog() {
+    std::cout << "\n--- Battle Log (log.txt) ---\n";
+    
+    std::ifstream logfile("log.txt");
+    if (!logfile.is_open()) {
+        std::cout << "Log file not found or empty.\n";
+        return;
+    }
+    
+    std::string line;
+    bool hasContent = false;
+    
+    while (std::getline(logfile, line)) {
+        std::cout << line << "\n";
+        hasContent = true;
+    }
+    
+    logfile.close();
+    
+    if (!hasContent) {
+        std::cout << "Log file is empty.\n";
+    }
+}
 
-    std::cout << "Current NPCs" << std::endl;
-    std::cout << array;
+void clearBattleLog() {
+    std::ofstream logfile("log.txt", std::ios::trunc);
+    logfile.close();
+    
+    std::cout << "Battle log cleared!\n";
+    
+    // Записываем само событие очистки
+    logfile.open("log.txt", std::ios::app);
+    auto now = std::time(nullptr);
+    logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+    logfile << "Log file cleared by user\n";
+    logfile.close();
+}
 
-    std::cout << "\nBattle Mode" << std::endl;
-    for (size_t distance = 20; (distance <= 100) && !array.empty(); distance += 20) {
-        auto dead_list = fight(array, distance);
+void printBattleRules() {
+    std::cout << "\n=== Battle Rules ===\n";
+    std::cout << "1. Slaver kills Squirrel\n";
+    std::cout << "2. Knight kills Slaver\n";
+    std::cout << "3. Squirrel kills Squirrel\n";
+    std::cout << "4. All other combinations: no kill\n";
+    std::cout << "====================\n";
+}
 
-        for (auto &d : dead_list){
-            array.erase(d);
+int main() {
+    std::vector<std::shared_ptr<NPC>> npcs;
+    int choice = 0;
+    
+    std::cout << "========================================\n";
+    std::cout << "   Welcome to Balagur Fate 3\n";
+    std::cout << "       Dungeon Editor\n";
+    std::cout << "========================================\n";
+    
+    // Создаем начальный лог файл
+    std::ofstream logfile("log.txt", std::ios::app);
+    auto now = std::time(nullptr);
+    logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+    logfile << "=== Program Started ===\n";
+    logfile.close();
+    
+    // Пример начальных NPC
+    npcs.push_back(Factory::CreateNPC(SlaverType, 100, 100, "Slaver1"));
+    npcs.push_back(Factory::CreateNPC(KnightType, 200, 200, "Knight1"));
+    npcs.push_back(Factory::CreateNPC(SquirrelType, 150, 150, "Squirrel1"));
+    npcs.push_back(Factory::CreateNPC(SquirrelType, 160, 160, "Squirrel2"));
+    
+    std::cout << "\nCreated 4 example NPCs.\n";
+    std::cout << "Battle events will be logged to 'log.txt'\n";
+    
+    printBattleRules();
+    
+    while (choice != 8) {
+        printMenu();
+        if (!(std::cin >> choice)) {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Invalid input!\n";
+            continue;
         }
-
-        std::cout << "Battle stats ----------" << std::endl;
-        std::cout << "Distance:" << distance << "m" << std::endl;
-        std::cout << "Killed:" << dead_list.size() << std::endl;
-        std::cout << "Survivors:" << array.size() << std::endl << std::endl;
+        
+        switch (choice) {
+            case 1:
+                addNPC(npcs);
+                break;
+            case 2:
+                showNPCs(npcs);
+                break;
+            case 3:
+                saveToFile(npcs);
+                break;
+            case 4:
+                loadFromFile(npcs);
+                break;
+            case 5:
+                startBattle(npcs);
+                break;
+            case 6:
+                showBattleLog();
+                break;
+            case 7:
+                clearBattleLog();
+                break;
+            case 8:
+                {
+                    std::cout << "\nGoodbye!\n";
+                    std::ofstream logfile("log.txt", std::ios::app);
+                    auto now = std::time(nullptr);
+                    logfile << std::put_time(std::localtime(&now), "[%Y-%m-%d %H:%M:%S] ");
+                    logfile << "=== Program Exited ===\n\n";
+                    logfile.close();
+                }
+                break;
+            default:
+                std::cout << "Invalid option! Please choose 1-8.\n";
+        }
     }
-
-    std::cout << "\nFinal Survivors" << std::endl;
-    if (array.empty()) {
-        std::cout << "No survivors left" << std::endl;
-    } else {
-        std::cout << array;
-    }
-
+    
     return 0;
 }

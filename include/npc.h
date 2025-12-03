@@ -13,6 +13,7 @@ class Slaver;
 class Squirrel;
 class Knight;
 class IFightObserver;
+class IFightVisitor;
 
 using set_t = std::set<std::shared_ptr<NPC>>;
 
@@ -30,6 +31,14 @@ public:
     virtual void on_fight(const std::shared_ptr<NPC> attacker, const std::shared_ptr<NPC> defender, bool win) = 0;
 };
 
+class IFightVisitor {
+public:
+    virtual ~IFightVisitor() = default;
+    virtual bool visit(std::shared_ptr<Slaver> other) = 0;
+    virtual bool visit(std::shared_ptr<Knight> other) = 0;
+    virtual bool visit(std::shared_ptr<Squirrel> other) = 0;
+};
+
 class NPC : public std::enable_shared_from_this<NPC>
 {
 protected:
@@ -45,12 +54,10 @@ public:
     virtual ~NPC() = default;
 
     void subscribe(std::shared_ptr<IFightObserver> observer);
-    void fight_notify(const std::shared_ptr<NPC> defender, bool win);
+    void fight_notify(const std::shared_ptr<NPC> attacker, bool win);
 
-    virtual bool accept(const std::shared_ptr<NPC>& attacker) = 0;
-    virtual bool fight(std::shared_ptr<Slaver> other) = 0;
-    virtual bool fight(std::shared_ptr<Knight> other) = 0;
-    virtual bool fight(std::shared_ptr<Squirrel> other) = 0;
+    // Изменено: теперь используется Visitor вместо accept с типами
+    virtual bool accept(std::shared_ptr<IFightVisitor> visitor) = 0;
 
     bool is_close(const std::shared_ptr<NPC> &other, size_t distance) const;
     NpcType get_type() const { return type; }

@@ -273,6 +273,33 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/factory.o: src/factory.cpp.o
+.PHONY : src/factory.o
+
+# target to build an object file
+src/factory.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/factory.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/factory.cpp.o
+.PHONY : src/factory.cpp.o
+
+src/factory.i: src/factory.cpp.i
+.PHONY : src/factory.i
+
+# target to preprocess a source file
+src/factory.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/factory.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/factory.cpp.i
+.PHONY : src/factory.cpp.i
+
+src/factory.s: src/factory.cpp.s
+.PHONY : src/factory.s
+
+# target to generate assembly for a file
+src/factory.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/factory.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/factory.cpp.s
+.PHONY : src/factory.cpp.s
+
 src/knight.o: src/knight.cpp.o
 .PHONY : src/knight.o
 
@@ -326,6 +353,33 @@ src/npc.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/npc.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/npc.cpp.s
 .PHONY : src/npc.cpp.s
+
+src/observer.o: src/observer.cpp.o
+.PHONY : src/observer.o
+
+# target to build an object file
+src/observer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/observer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/observer.cpp.o
+.PHONY : src/observer.cpp.o
+
+src/observer.i: src/observer.cpp.i
+.PHONY : src/observer.i
+
+# target to preprocess a source file
+src/observer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/observer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/observer.cpp.i
+.PHONY : src/observer.cpp.i
+
+src/observer.s: src/observer.cpp.s
+.PHONY : src/observer.s
+
+# target to generate assembly for a file
+src/observer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/observer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/observer.cpp.s
+.PHONY : src/observer.cpp.s
 
 src/slaver.o: src/slaver.cpp.o
 .PHONY : src/slaver.o
@@ -381,6 +435,33 @@ src/squirrel.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/squirrel.cpp.s
 .PHONY : src/squirrel.cpp.s
 
+src/visitor.o: src/visitor.cpp.o
+.PHONY : src/visitor.o
+
+# target to build an object file
+src/visitor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/visitor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/visitor.cpp.o
+.PHONY : src/visitor.cpp.o
+
+src/visitor.i: src/visitor.cpp.i
+.PHONY : src/visitor.i
+
+# target to preprocess a source file
+src/visitor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/visitor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/visitor.cpp.i
+.PHONY : src/visitor.cpp.i
+
+src/visitor.s: src/visitor.cpp.s
+.PHONY : src/visitor.s
+
+# target to generate assembly for a file
+src/visitor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab_06.dir/build.make CMakeFiles/lab_06.dir/src/visitor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/visitor.cpp.s
+.PHONY : src/visitor.cpp.s
+
 test/test_all.o: test/test_all.cpp.o
 .PHONY : test/test_all.o
 
@@ -427,18 +508,27 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/factory.o"
+	@echo "... src/factory.i"
+	@echo "... src/factory.s"
 	@echo "... src/knight.o"
 	@echo "... src/knight.i"
 	@echo "... src/knight.s"
 	@echo "... src/npc.o"
 	@echo "... src/npc.i"
 	@echo "... src/npc.s"
+	@echo "... src/observer.o"
+	@echo "... src/observer.i"
+	@echo "... src/observer.s"
 	@echo "... src/slaver.o"
 	@echo "... src/slaver.i"
 	@echo "... src/slaver.s"
 	@echo "... src/squirrel.o"
 	@echo "... src/squirrel.i"
 	@echo "... src/squirrel.s"
+	@echo "... src/visitor.o"
+	@echo "... src/visitor.i"
+	@echo "... src/visitor.s"
 	@echo "... test/test_all.o"
 	@echo "... test/test_all.i"
 	@echo "... test/test_all.s"

@@ -142,13 +142,58 @@ CMakeFiles/test_all.dir/src/squirrel.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_all.dir/src/squirrel.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/daria/Desktop/oop/лаба6/src/squirrel.cpp -o CMakeFiles/test_all.dir/src/squirrel.cpp.s
 
+CMakeFiles/test_all.dir/src/factory.cpp.o: CMakeFiles/test_all.dir/flags.make
+CMakeFiles/test_all.dir/src/factory.cpp.o: /mnt/c/Users/daria/Desktop/oop/лаба6/src/factory.cpp
+CMakeFiles/test_all.dir/src/factory.cpp.o: CMakeFiles/test_all.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/daria/Desktop/oop/лаба6/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/test_all.dir/src/factory.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_all.dir/src/factory.cpp.o -MF CMakeFiles/test_all.dir/src/factory.cpp.o.d -o CMakeFiles/test_all.dir/src/factory.cpp.o -c /mnt/c/Users/daria/Desktop/oop/лаба6/src/factory.cpp
+
+CMakeFiles/test_all.dir/src/factory.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_all.dir/src/factory.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/daria/Desktop/oop/лаба6/src/factory.cpp > CMakeFiles/test_all.dir/src/factory.cpp.i
+
+CMakeFiles/test_all.dir/src/factory.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_all.dir/src/factory.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/daria/Desktop/oop/лаба6/src/factory.cpp -o CMakeFiles/test_all.dir/src/factory.cpp.s
+
+CMakeFiles/test_all.dir/src/observer.cpp.o: CMakeFiles/test_all.dir/flags.make
+CMakeFiles/test_all.dir/src/observer.cpp.o: /mnt/c/Users/daria/Desktop/oop/лаба6/src/observer.cpp
+CMakeFiles/test_all.dir/src/observer.cpp.o: CMakeFiles/test_all.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/daria/Desktop/oop/лаба6/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/test_all.dir/src/observer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_all.dir/src/observer.cpp.o -MF CMakeFiles/test_all.dir/src/observer.cpp.o.d -o CMakeFiles/test_all.dir/src/observer.cpp.o -c /mnt/c/Users/daria/Desktop/oop/лаба6/src/observer.cpp
+
+CMakeFiles/test_all.dir/src/observer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_all.dir/src/observer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/daria/Desktop/oop/лаба6/src/observer.cpp > CMakeFiles/test_all.dir/src/observer.cpp.i
+
+CMakeFiles/test_all.dir/src/observer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_all.dir/src/observer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/daria/Desktop/oop/лаба6/src/observer.cpp -o CMakeFiles/test_all.dir/src/observer.cpp.s
+
+CMakeFiles/test_all.dir/src/visitor.cpp.o: CMakeFiles/test_all.dir/flags.make
+CMakeFiles/test_all.dir/src/visitor.cpp.o: /mnt/c/Users/daria/Desktop/oop/лаба6/src/visitor.cpp
+CMakeFiles/test_all.dir/src/visitor.cpp.o: CMakeFiles/test_all.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/Users/daria/Desktop/oop/лаба6/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/test_all.dir/src/visitor.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_all.dir/src/visitor.cpp.o -MF CMakeFiles/test_all.dir/src/visitor.cpp.o.d -o CMakeFiles/test_all.dir/src/visitor.cpp.o -c /mnt/c/Users/daria/Desktop/oop/лаба6/src/visitor.cpp
+
+CMakeFiles/test_all.dir/src/visitor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_all.dir/src/visitor.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/daria/Desktop/oop/лаба6/src/visitor.cpp > CMakeFiles/test_all.dir/src/visitor.cpp.i
+
+CMakeFiles/test_all.dir/src/visitor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_all.dir/src/visitor.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/daria/Desktop/oop/лаба6/src/visitor.cpp -o CMakeFiles/test_all.dir/src/visitor.cpp.s
+
 # Object files for target test_all
 test_all_OBJECTS = \
 "CMakeFiles/test_all.dir/test/test_all.cpp.o" \
 "CMakeFiles/test_all.dir/src/npc.cpp.o" \
 "CMakeFiles/test_all.dir/src/slaver.cpp.o" \
 "CMakeFiles/test_all.dir/src/knight.cpp.o" \
-"CMakeFiles/test_all.dir/src/squirrel.cpp.o"
+"CMakeFiles/test_all.dir/src/squirrel.cpp.o" \
+"CMakeFiles/test_all.dir/src/factory.cpp.o" \
+"CMakeFiles/test_all.dir/src/observer.cpp.o" \
+"CMakeFiles/test_all.dir/src/visitor.cpp.o"
 
 # External object files for target test_all
 test_all_EXTERNAL_OBJECTS =
@@ -158,12 +203,15 @@ test_all: CMakeFiles/test_all.dir/src/npc.cpp.o
 test_all: CMakeFiles/test_all.dir/src/slaver.cpp.o
 test_all: CMakeFiles/test_all.dir/src/knight.cpp.o
 test_all: CMakeFiles/test_all.dir/src/squirrel.cpp.o
+test_all: CMakeFiles/test_all.dir/src/factory.cpp.o
+test_all: CMakeFiles/test_all.dir/src/observer.cpp.o
+test_all: CMakeFiles/test_all.dir/src/visitor.cpp.o
 test_all: CMakeFiles/test_all.dir/build.make
 test_all: CMakeFiles/test_all.dir/compiler_depend.ts
 test_all: lib/libgtest_main.a
 test_all: lib/libgtest.a
 test_all: CMakeFiles/test_all.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/mnt/c/Users/daria/Desktop/oop/лаба6/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable test_all"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/mnt/c/Users/daria/Desktop/oop/лаба6/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable test_all"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_all.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

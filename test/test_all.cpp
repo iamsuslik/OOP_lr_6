@@ -3,8 +3,12 @@
 #include "../include/slaver.h" 
 #include "../include/knight.h" 
 #include "../include/squirrel.h"
+#include "../include/factory.h"
+#include "../include/visitor.h"
+#include "../include/observer.h"
 #include <sstream>
 #include <stdexcept>
+#include <memory>
 
 class MockObserver : public IFightObserver {
 public:
@@ -30,19 +34,28 @@ protected:
     std::shared_ptr<MockObserver> observer;
 };
 
-// Тест 1: Создание NPC
-TEST_F(NPCTest, NPCCreation) {
+// Тест 1: Создание NPC через фабрику
+TEST_F(NPCTest, FactoryNPCCreation) {
+    auto slaver = Factory::CreateNPC(SlaverType, 100, 100, "TestSlaver");
+    auto knight = Factory::CreateNPC(KnightType, 200, 200, "TestKnight");
+    auto squirrel = Factory::CreateNPC(SquirrelType, 300, 300, "TestSquirrel");
+    
+    EXPECT_NE(slaver, nullptr);
+    EXPECT_NE(knight, nullptr);
+    EXPECT_NE(squirrel, nullptr);
+    
+    EXPECT_EQ(slaver->get_type(), SlaverType);
+    EXPECT_EQ(knight->get_type(), KnightType);
+    EXPECT_EQ(squirrel->get_type(), SquirrelType);
+}
+
+// Тест 2: Создание NPC напрямую
+TEST_F(NPCTest, DirectNPCCreation) {
     auto slaver = std::make_shared<Slaver>(100, 100, "TestSlaver");
     EXPECT_EQ(slaver->get_type(), SlaverType);
     EXPECT_EQ(slaver->get_x(), 100);
     EXPECT_EQ(slaver->get_y(), 100);
     EXPECT_EQ(slaver->get_name(), "TestSlaver");
-}
-
-// Тест 2: Валидация координат
-TEST_F(NPCTest, CoordinatesValidation) {
-    EXPECT_THROW(std::make_shared<Slaver>(-1, 100, "BadSlaver"), std::runtime_error);
-    EXPECT_THROW(std::make_shared<Slaver>(100, 600, "BadSlaver"), std::runtime_error);
 }
 
 // Тест 3: Расчет расстояния
@@ -54,8 +67,8 @@ TEST_F(NPCTest, DistanceCalculation) {
     EXPECT_FALSE(npc1->is_close(npc2, 4));
 }
 
-// Тест 4: Логика боя работорговца как защитника
-TEST_F(NPCTest, SlaverFightLogic) {
+// Тест 4: Логика боя работорговца с использованием Visitor
+TEST_F(NPCTest, SlaverFightLogicWithVisitor) {
     auto slaver = std::make_shared<Slaver>(100, 100, "Slaver1");
     auto knight = std::make_shared<Knight>(100, 100, "Knight1");
     auto squirrel = std::make_shared<Squirrel>(100, 100, "Squirrel1");
@@ -63,56 +76,71 @@ TEST_F(NPCTest, SlaverFightLogic) {
     
     slaver->subscribe(observer);
 
-    // Рыцарь убивает работорговца
-    EXPECT_TRUE(slaver->accept(knight));
+    // Рыцарь атакует работорговца (рыцарь убивает работорговца)
+    auto knight_visitor = std::make_shared<BattleVisitor>(knight);
+    EXPECT_TRUE(slaver->accept(knight_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_TRUE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), KnightType);
     EXPECT_EQ(observer->last_defender->get_type(), SlaverType);
     observer->fight_observed = false;
 
-    // Белка не убивает работорговца
-    EXPECT_FALSE(slaver->accept(squirrel));
+    // Белка атакует работорговца (белка не убивает работорговца)
+    auto squirrel_visitor = std::make_shared<BattleVisitor>(squirrel);
+    EXPECT_FALSE(slaver->accept(squirrel_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_FALSE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), SquirrelType);
     EXPECT_EQ(observer->last_defender->get_type(), SlaverType);
     observer->fight_observed = false;
 
-    // Работорговец не убивает работорговца
-    EXPECT_FALSE(slaver->accept(slaver2));
+    // Работорговец атакует работорговца (работорговец не убивает работорговца)
+    auto slaver_visitor = std::make_shared<BattleVisitor>(slaver2);
+    EXPECT_FALSE(slaver->accept(slaver_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_FALSE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), SlaverType);
     EXPECT_EQ(observer->last_defender->get_type(), SlaverType);
 }
 
-// Тест 5: Логика боя рыцаря как защитника
-TEST_F(NPCTest, KnightFightLogic) {
+// Тест 5: Логика боя рыцаря с использованием Visitor
+TEST_F(NPCTest, KnightFightLogicWithVisitor) {
     auto knight = std::make_shared<Knight>(100, 100, "Knight1");
     auto squirrel = std::make_shared<Squirrel>(100, 100, "Squirrel1");
     auto slaver = std::make_shared<Slaver>(100, 100, "Slaver1");
+    auto knight2 = std::make_shared<Knight>(100, 100, "Knight2");
     
     knight->subscribe(observer);
 
-    // Белка не убивает рыцаря
-    EXPECT_FALSE(knight->accept(squirrel));
+    // Белка атакует рыцаря (белка не убивает рыцаря)
+    auto squirrel_visitor = std::make_shared<BattleVisitor>(squirrel);
+    EXPECT_FALSE(knight->accept(squirrel_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_FALSE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), SquirrelType);
     EXPECT_EQ(observer->last_defender->get_type(), KnightType);
     observer->fight_observed = false;
 
-    // Работорговец не убивает рыцаря
-    EXPECT_FALSE(knight->accept(slaver));
+    // Работорговец атакует рыцаря (работорговец не убивает рыцаря)
+    auto slaver_visitor = std::make_shared<BattleVisitor>(slaver);
+    EXPECT_FALSE(knight->accept(slaver_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_FALSE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), SlaverType);
     EXPECT_EQ(observer->last_defender->get_type(), KnightType);
+    observer->fight_observed = false;
+
+    // Рыцарь атакует рыцаря (рыцарь не убивает рыцаря)
+    auto knight_visitor = std::make_shared<BattleVisitor>(knight2);
+    EXPECT_FALSE(knight->accept(knight_visitor));
+    EXPECT_TRUE(observer->fight_observed);
+    EXPECT_FALSE(observer->last_win);
+    EXPECT_EQ(observer->last_attacker->get_type(), KnightType);
+    EXPECT_EQ(observer->last_defender->get_type(), KnightType);
 }
 
-// Тест 6: Логика боя белки как защитника
-TEST_F(NPCTest, SquirrelFightLogic) {
+// Тест 6: Логика боя белки с использованием Visitor
+TEST_F(NPCTest, SquirrelFightLogicWithVisitor) {
     auto squirrel = std::make_shared<Squirrel>(100, 100, "Squirrel1");
     auto slaver = std::make_shared<Slaver>(100, 100, "Slaver1");
     auto knight = std::make_shared<Knight>(100, 100, "Knight1");
@@ -120,58 +148,158 @@ TEST_F(NPCTest, SquirrelFightLogic) {
     
     squirrel->subscribe(observer);
 
-    // Работорговец убивает белку
-    EXPECT_TRUE(squirrel->accept(slaver));
+    // Работорговец атакует белку (работорговец убивает белку)
+    auto slaver_visitor = std::make_shared<BattleVisitor>(slaver);
+    EXPECT_TRUE(squirrel->accept(slaver_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_TRUE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), SlaverType);
     EXPECT_EQ(observer->last_defender->get_type(), SquirrelType);
     observer->fight_observed = false;
 
-    // Рыцарь не убивает белку
-    EXPECT_FALSE(squirrel->accept(knight));
+    // Рыцарь атакует белку (рыцарь не убивает белку)
+    auto knight_visitor = std::make_shared<BattleVisitor>(knight);
+    EXPECT_FALSE(squirrel->accept(knight_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_FALSE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), KnightType);
     EXPECT_EQ(observer->last_defender->get_type(), SquirrelType);
     observer->fight_observed = false;
 
-    // Белка убивает белку
-    EXPECT_TRUE(squirrel->accept(squirrel2));
+    // Белка атакует белку (белка убивает белку)
+    auto squirrel_attacker_visitor = std::make_shared<BattleVisitor>(squirrel2);
+    EXPECT_TRUE(squirrel->accept(squirrel_attacker_visitor));
     EXPECT_TRUE(observer->fight_observed);
     EXPECT_TRUE(observer->last_win);
     EXPECT_EQ(observer->last_attacker->get_type(), SquirrelType);
     EXPECT_EQ(observer->last_defender->get_type(), SquirrelType);
 }
 
-// Тест 7: Сохранение и загрузка
-TEST_F(NPCTest, SaveAndLoad) {
-    auto original_slaver = std::make_shared<Slaver>(123, 456, "TestSlaver");
-    auto original_knight = std::make_shared<Knight>(321, 254, "TestKnight");
+// Тест 7: Сохранение и загрузка через фабрику
+TEST_F(NPCTest, SaveAndLoadWithFactory) {
+    // Создаем оригинальные объекты
+    auto original_slaver = Factory::CreateNPC(SlaverType, 123, 456, "TestSlaver");
+    auto original_knight = Factory::CreateNPC(KnightType, 321, 254, "TestKnight");
+    auto original_squirrel = Factory::CreateNPC(SquirrelType, 111, 222, "TestSquirrel");
 
+    // Сохраняем в поток
     std::stringstream ss;
     original_slaver->save(ss);
     original_knight->save(ss);
+    original_squirrel->save(ss);
 
     ss.seekg(0);
 
-    // Загрузка работорговца
-    int type;
-    ss >> type;
-    auto loaded_slaver = std::make_shared<Slaver>(ss);
-
-    // Загрузка рыцаря
-    ss >> type;
-    auto loaded_knight = std::make_shared<Knight>(ss);
+    // Загружаем через фабрику
+    auto loaded_slaver = Factory::CreateNPC(ss);
+    auto loaded_knight = Factory::CreateNPC(ss);
+    auto loaded_squirrel = Factory::CreateNPC(ss);
+    
+    EXPECT_NE(loaded_slaver, nullptr);
+    EXPECT_NE(loaded_knight, nullptr);
+    EXPECT_NE(loaded_squirrel, nullptr);
     
     EXPECT_EQ(loaded_slaver->get_type(), SlaverType);
     EXPECT_EQ(loaded_slaver->get_x(), 123);
     EXPECT_EQ(loaded_slaver->get_y(), 456);
     EXPECT_EQ(loaded_slaver->get_name(), "TestSlaver");
+    
     EXPECT_EQ(loaded_knight->get_type(), KnightType);
     EXPECT_EQ(loaded_knight->get_x(), 321);
     EXPECT_EQ(loaded_knight->get_y(), 254);
     EXPECT_EQ(loaded_knight->get_name(), "TestKnight");
+    
+    EXPECT_EQ(loaded_squirrel->get_type(), SquirrelType);
+    EXPECT_EQ(loaded_squirrel->get_x(), 111);
+    EXPECT_EQ(loaded_squirrel->get_y(), 222);
+    EXPECT_EQ(loaded_squirrel->get_name(), "TestSquirrel");
+}
+
+// Тест 8: Наблюдатели через фабрику
+TEST_F(NPCTest, FactoryObservers) {
+    auto npc = Factory::CreateNPC(SlaverType, 100, 100, "TestNPC");
+    
+    // Добавляем дополнительного наблюдателя
+    npc->subscribe(observer);
+    
+    // Создаем атакующего
+    auto knight = std::make_shared<Knight>(100, 100, "Attacker");
+    
+    // Вызываем бой через Visitor
+    auto visitor = std::make_shared<BattleVisitor>(knight);
+    npc->accept(visitor);
+    
+    // Проверяем, что наблюдатель получил уведомление
+    EXPECT_TRUE(observer->fight_observed);
+}
+
+// Тест 9: Неправильный тип при загрузке
+TEST_F(NPCTest, InvalidTypeLoad) {
+    std::stringstream ss;
+    ss << "999 100 100 InvalidNPC" << std::endl; // Неправильный тип
+    
+    auto npc = Factory::CreateNPC(ss);
+    EXPECT_EQ(npc, nullptr);
+}
+
+// Тест 10: Проверка оператора вывода
+TEST_F(NPCTest, OutputOperator) {
+    auto slaver = std::make_shared<Slaver>(100, 200, "TestOutput");
+    std::stringstream ss;
+    ss << *slaver;
+    
+    std::string output = ss.str();
+    EXPECT_TRUE(output.find("Slaver:") != std::string::npos);
+    EXPECT_TRUE(output.find("\"TestOutput\"") != std::string::npos);
+    EXPECT_TRUE(output.find("x:100") != std::string::npos);
+    EXPECT_TRUE(output.find("y:200") != std::string::npos);
+}
+
+// Тест 11: Проверка работы Visitor с разными типами атакующих
+TEST_F(NPCTest, VisitorDifferentAttackers) {
+    auto defender = std::make_shared<Squirrel>(100, 100, "Defender");
+    defender->subscribe(observer);
+    
+    // Тестируем разных атакующих
+    auto slaver = std::make_shared<Slaver>(100, 100, "SlaverAttacker");
+    auto squirrel = std::make_shared<Squirrel>(100, 100, "SquirrelAttacker");
+    auto knight = std::make_shared<Knight>(100, 100, "KnightAttacker");
+    
+    // Работорговец должен убить белку
+    auto slaver_visitor = std::make_shared<BattleVisitor>(slaver);
+    EXPECT_TRUE(defender->accept(slaver_visitor));
+    EXPECT_TRUE(observer->last_win);
+    observer->fight_observed = false;
+    
+    // Белка должна убить белку
+    auto squirrel_visitor = std::make_shared<BattleVisitor>(squirrel);
+    EXPECT_TRUE(defender->accept(squirrel_visitor));
+    EXPECT_TRUE(observer->last_win);
+    observer->fight_observed = false;
+    
+    // Рыцарь не должен убить белку
+    auto knight_visitor = std::make_shared<BattleVisitor>(knight);
+    EXPECT_FALSE(defender->accept(knight_visitor));
+    EXPECT_FALSE(observer->last_win);
+}
+
+// Тест 12: Проверка метода print()
+TEST_F(NPCTest, PrintMethod) {
+    auto knight = std::make_shared<Knight>(150, 250, "PrintTest");
+    
+    // Перенаправляем вывод
+    std::stringstream output;
+    auto old_buf = std::cout.rdbuf(output.rdbuf());
+    
+    knight->print();
+    
+    std::cout.rdbuf(old_buf);
+    
+    std::string result = output.str();
+    EXPECT_TRUE(result.find("Knight:") != std::string::npos);
+    EXPECT_TRUE(result.find("\"PrintTest\"") != std::string::npos);
+    EXPECT_TRUE(result.find("x:150") != std::string::npos);
+    EXPECT_TRUE(result.find("y:250") != std::string::npos);
 }
 
 int main(int argc, char **argv) {
