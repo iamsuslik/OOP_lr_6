@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/lab_06.dir/link.d CMakeFiles/lab_06.dir/main.cpp.o CMakeFiles/lab_06.dir/src/npc.cpp.o CMakeFiles/lab_06.dir/src/slaver.cpp.o CMakeFiles/lab_06.dir/src/knight.cpp.o CMakeFiles/lab_06.dir/src/squirrel.cpp.o -o lab_06

@@ -1,0 +1,95 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/snap/cmake/1499/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:16 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+      - "/usr/lib/wsl/lib/"
+      - "/mnt/c/Program Files/WindowsApps/MicrosoftCorporationII.WindowsSubsystemForLinux_2.4.12.0_x64__8wekyb3d8bbwe/"
+      - "/mnt/c/Program Files (x86)/VMware/VMware Workstation/bin/"
+      - "/mnt/c/Program Files/nodejs/"
+      - "/mnt/c/Program Files/CMake/bin/"
+      - "/mnt/c/mingw64/bin/"
+      - "/mnt/c/Program Files/Git/cmd/"
+      - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Launcher/"
+      - "/mnt/c/Users/daria/AppData/Local/Microsoft/WindowsApps/"
+      - "/mnt/c/Users/daria/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312/python.exe/"
+      - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312/Lib/venv/scripts/nt/python.exe/"
+      - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312/"
+      - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312/Scripts/"
+      - "/mnt/c/Program Files/Docker/Docker/resources/bin/"
+      - "/mnt/c/Users/daria/.lmstudio/bin/"
+      - "/mnt/c/Users/daria/AppData/Local/Programs/Ollama/"
+      - "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/"
+      - "/mnt/c/Windows/System32/"
+      - "/mnt/c/Users/daria/AppData/Roaming/npm/"
+      - "/snap/bin/"
+    searched_directories:
+      - "/usr/local/sbin/uname"
+      - "/usr/local/bin/uname"
+      - "/usr/sbin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/usr/lib/wsl/lib"
+        - "/mnt/c/Program Files/WindowsApps/MicrosoftCorporationII.WindowsSubsystemForLinux_2.4.12.0_x64__8wekyb3d8bbwe"
+        - "/mnt/c/Program Files (x86)/VMware/VMware Workstation/bin/"
+        - "/mnt/c/Program Files/nodejs/"
+        - "/mnt/c/Program Files/CMake/bin"
+        - "/mnt/c/mingw64/bin"
+        - "/mnt/c/Program Files/Git/cmd"
+        - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Launcher/"
+        - "/mnt/c/Users/daria/AppData/Local/Microsoft/WindowsApps"
+        - "/mnt/c/Users/daria/AppData/Local/Programs/Microsoft VS Code/bin"
+        - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312/python.exe"
+        - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312/Lib/venv/scripts/nt/python.exe"
+        - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312"
+        - "/mnt/c/Users/daria/AppData/Local/Programs/Python/Python312/Scripts"
+        - "/mnt/c/Program Files/Docker/Docker/resources/bin"
+        - "/mnt/c/Users/daria/.lmstudio/bin"
+        - "/mnt/c/Users/daria/AppData/Local/Programs/Ollama"
+        - "/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
+        - "/mnt/c/Windows/System32"
+        - "/mnt/c/Users/daria/AppData/Roaming/npm"
+        - "/snap/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1499/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      The system is: Linux - 5.15.167.4-microsoft-standard-WSL2 - x86_64
+...
