@@ -218,25 +218,21 @@ TEST_F(NPCTest, SaveAndLoadWithFactory) {
 // Тест 8: Наблюдатели через фабрику
 TEST_F(NPCTest, FactoryObservers) {
     auto npc = Factory::CreateNPC(SlaverType, 100, 100, "TestNPC");
-    
-    // Добавляем дополнительного наблюдателя
+
     npc->subscribe(observer);
-    
-    // Создаем атакующего
+
     auto knight = std::make_shared<Knight>(100, 100, "Attacker");
-    
-    // Вызываем бой через Visitor
+
     auto visitor = std::make_shared<BattleVisitor>(knight);
     npc->accept(visitor);
-    
-    // Проверяем, что наблюдатель получил уведомление
+
     EXPECT_TRUE(observer->fight_observed);
 }
 
 // Тест 9: Неправильный тип при загрузке
 TEST_F(NPCTest, InvalidTypeLoad) {
     std::stringstream ss;
-    ss << "999 100 100 InvalidNPC" << std::endl; // Неправильный тип
+    ss << "999 100 100 InvalidNPC" << std::endl;
     
     auto npc = Factory::CreateNPC(ss);
     EXPECT_EQ(npc, nullptr);
@@ -259,8 +255,7 @@ TEST_F(NPCTest, OutputOperator) {
 TEST_F(NPCTest, VisitorDifferentAttackers) {
     auto defender = std::make_shared<Squirrel>(100, 100, "Defender");
     defender->subscribe(observer);
-    
-    // Тестируем разных атакующих
+
     auto slaver = std::make_shared<Slaver>(100, 100, "SlaverAttacker");
     auto squirrel = std::make_shared<Squirrel>(100, 100, "SquirrelAttacker");
     auto knight = std::make_shared<Knight>(100, 100, "KnightAttacker");
@@ -286,8 +281,7 @@ TEST_F(NPCTest, VisitorDifferentAttackers) {
 // Тест 12: Проверка метода print()
 TEST_F(NPCTest, PrintMethod) {
     auto knight = std::make_shared<Knight>(150, 250, "PrintTest");
-    
-    // Перенаправляем вывод
+
     std::stringstream output;
     auto old_buf = std::cout.rdbuf(output.rdbuf());
     

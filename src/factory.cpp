@@ -19,7 +19,6 @@ std::shared_ptr<NPC> Factory::CreateNPC(NpcType type, int x, int y, const std::s
     }
 
     if (result) {
-        // Подписываем на наблюдателей
         result->subscribe(TextObserver::get());
         result->subscribe(FileObserver::get());
     }
@@ -42,7 +41,6 @@ std::shared_ptr<NPC> Factory::CreateNPC(std::istream &is) {
         }
     }
     if (result) {
-        // Подписываем на наблюдателей
         result->subscribe(TextObserver::get());
         result->subscribe(FileObserver::get());
     }

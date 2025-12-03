@@ -56,7 +56,6 @@ public:
     void subscribe(std::shared_ptr<IFightObserver> observer);
     void fight_notify(const std::shared_ptr<NPC> attacker, bool win);
 
-    // Изменено: теперь используется Visitor вместо accept с типами
     virtual bool accept(std::shared_ptr<IFightVisitor> visitor) = 0;
 
     bool is_close(const std::shared_ptr<NPC> &other, size_t distance) const;
